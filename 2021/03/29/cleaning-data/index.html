@@ -88,9 +88,12 @@
 <pre class="r"><code>badlogs &lt;- read.csv(&quot;badfootballlogs19.csv&quot;)</code></pre>
 <p>I separated the columns to display whether it was a win, a loss and then the score and which team scored how many points.</p>
 <pre class="r"><code>badlogs &lt;- badlogs %&gt;% separate(Result, into=c(&quot;Outcome&quot;, &quot;Score&quot;), sep=&quot; &quot;) %&gt;% mutate(Score = gsub(&quot;)&quot;, &quot;&quot;, Score, fixed=TRUE)) %&gt;%  mutate(Score = gsub(&quot;(&quot;, &quot;&quot;, Score, fixed=TRUE)) %&gt;% separate(Score, into=c(&quot;TeamScore&quot;, &quot;OpponentScore&quot;), sep=&quot;-&quot;)</code></pre>
+<p>Following mutating the data I collected, I mutated the scored to show as a numeric number rather than a character.</p>
 <pre class="r"><code>badlogs &lt;- badlogs %&gt;% mutate(TeamScore = as.numeric(TeamScore), OpponentScore = as.numeric(OpponentScore))</code></pre>
+<p>Now that they were seen as characters, I reated a column for differential between Team Score and Opponent score to see the highest differentials of last season.</p>
 <pre class="r"><code>badlogs &lt;- badlogs %&gt;% mutate(Differential = TeamScore - OpponentScore)</code></pre>
 <pre class="r"><code>worstgames &lt;- badlogs %&gt;% filter(Differential &gt; 65)</code></pre>
+<p>We now found the worst games in whcih the differential was greater than 65 points.</p>
 <pre class="r"><code>library(ggalt)</code></pre>
 <pre><code>## Registered S3 methods overwritten by &#39;ggalt&#39;:
 ##   method                  from   
