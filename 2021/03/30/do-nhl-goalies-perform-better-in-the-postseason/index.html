@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Do NHL Goalies Perform Better in the Postseason? - Alex Kopf</title>
+<meta property="og:title" content="Do NHL Goalies Perform Better in the Postseason? - Alex Kopf">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/akopf2">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/bigsaveaj">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">4 min read</span>
+    
+
+    <h1 class="article-title">Do NHL Goalies Perform Better in the Postseason?</h1>
+
+    
+    <span class="article-date">2021-03-30</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>If you watch any team oriented sport, you will hear the phrase “Defense wins championships,”. However, I believe that in the NHL your goalie’s performance is even more enhanced compared to the regular season. If you watch the NHL playoffs most will agree there isn’t many other postseasons like it. The energy is unmatched. My belief is that if your goalie becomes “hot” in the playoffs they will win more games.</p>
+<p>Let’s take a look at some stats.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.0.3     ✓ dplyr   1.0.2
+## ✓ tidyr   1.1.2     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.0</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggrepel)</code></pre>
+<pre class="r"><code>regseason1920 &lt;- read.csv(&quot;regseason20192020.csv&quot;)
+regseason1819 &lt;- read.csv(&quot;regseason20182019.csv&quot;)
+regseason1718 &lt;- read.csv(&quot;regseason20172018.csv&quot;)
+regseason1617 &lt;- read.csv(&quot;regseason20162017.csv&quot;)
+regseason1516 &lt;- read.csv(&quot;regseason20152016.csv&quot;)
+regseason1415 &lt;- read.csv(&quot;regseason20142015.csv&quot;)
+regseason1314 &lt;- read.csv(&quot;regseason20132014.csv&quot;)
+regseason1213 &lt;- read.csv(&quot;regseason20122013.csv&quot;)
+regseason1112 &lt;- read.csv(&quot;regseason20112012.csv&quot;)
+regseason1011 &lt;- read.csv(&quot;regseason20102011.csv&quot;)</code></pre>
+<pre class="r"><code>regseason1011 &lt;- regseason1011 %&gt;% mutate(Year = 2011)
+regseason1112 &lt;- regseason1112 %&gt;% mutate(Year = 2012)
+regseason1213 &lt;- regseason1213 %&gt;% mutate(Year = 2013)
+regseason1314 &lt;- regseason1314 %&gt;% mutate(Year = 2014)
+regseason1415 &lt;- regseason1415 %&gt;% mutate(Year = 2015)
+regseason1516 &lt;- regseason1516 %&gt;% mutate(Year = 2016)
+regseason1617 &lt;- regseason1617 %&gt;% mutate(Year = 2017)
+regseason1718 &lt;- regseason1718 %&gt;% mutate(Year = 2018)
+regseason1819 &lt;- regseason1819 %&gt;% mutate(Year = 2019)
+regseason1920 &lt;- regseason1920 %&gt;% mutate(Year = 2020)</code></pre>
+<pre class="r"><code>regseasons &lt;- bind_rows(regseason1011, regseason1112, regseason1213, regseason1314, regseason1415, regseason1516, regseason1617, regseason1718, regseason1819, regseason1920)</code></pre>
+<pre class="r"><code>regseasons &lt;- regseasons %&gt;% filter(GP &gt; 30)</code></pre>
+<p>The first data set I will be looking at is every goalie from the 2010-2011 season to the 2019-2020 season of last year from Sports Reference’s NHL site. I grouped them into one large data set and then filtered it to only show goalies who played in more than 30 games, indicating they were regular time starters for their team.</p>
+<pre class="r"><code>ploffs1920 &lt;- read.csv(&quot;ploffs20192020.csv&quot;)
+ploffs1819 &lt;- read.csv(&quot;ploffs20182019.csv&quot;)
+ploffs1718 &lt;- read.csv(&quot;ploffs20172018.csv&quot;)
+ploffs1617 &lt;- read.csv(&quot;ploffs20162017.csv&quot;)
+ploffs1516 &lt;- read.csv(&quot;ploffs20152016.csv&quot;)
+ploffs1415 &lt;- read.csv(&quot;ploffs20142015.csv&quot;)
+ploffs1314 &lt;- read.csv(&quot;ploffs20132014.csv&quot;)
+ploffs1213 &lt;- read.csv(&quot;ploffs20122013.csv&quot;)
+ploffs1112 &lt;- read.csv(&quot;ploffs20112012.csv&quot;)
+ploffs1011 &lt;- read.csv(&quot;ploffs20102011.csv&quot;)</code></pre>
+<pre class="r"><code>ploffs1011 &lt;- ploffs1011 %&gt;% mutate(Year = 2011)
+ploffs1112 &lt;- ploffs1112 %&gt;% mutate(Year = 2012)
+ploffs1213 &lt;- ploffs1213 %&gt;% mutate(Year = 2013)
+ploffs1314 &lt;- ploffs1314 %&gt;% mutate(Year = 2014)
+ploffs1415 &lt;- ploffs1415 %&gt;% mutate(Year = 2015)
+ploffs1516 &lt;- ploffs1516 %&gt;% mutate(Year = 2016)
+ploffs1617 &lt;- ploffs1617 %&gt;% mutate(Year = 2017)
+ploffs1718 &lt;- ploffs1718 %&gt;% mutate(Year = 2018)
+ploffs1819 &lt;- ploffs1819 %&gt;% mutate(Year= 2019)
+ploffs1920 &lt;- ploffs1920 %&gt;% mutate(Year = 2020)</code></pre>
+<pre class="r"><code>playoffs &lt;- bind_rows(ploffs1011, ploffs1112, ploffs1213, ploffs1314, ploffs1415, ploffs1516, ploffs1617, ploffs1718, ploffs1819, ploffs1920) </code></pre>
+<pre class="r"><code>playoffs &lt;- playoffs %&gt;% filter(GP &gt; 10)</code></pre>
+<pre class="r"><code>playoffstuds &lt;- playoffs %&gt;% filter(SV. &gt; .940)</code></pre>
+<p>So I filtered the original playoff data into a separate block to display the most elite goalies of the playoffs who had a save percentage greater then .940. We will use this later on.</p>
+<pre class="r"><code>regseasons &lt;- regseasons %&gt;% mutate(Player=gsub(&quot;\\\\.*&quot;,&quot;&quot;,Player))
+playoffs &lt;- playoffs %&gt;% mutate(Player=gsub(&quot;\\\\.*&quot;,&quot;&quot;,Player))
+playoffstuds &lt;- playoffstuds %&gt;% mutate(Player=gsub(&quot;\\\\.*&quot;,&quot;&quot;,Player))</code></pre>
+<pre class="r"><code>regseasons &lt;- regseasons %&gt;% mutate(PlayerLabel = paste(Player, Year, sep=&quot; &quot;))
+playoffs &lt;- playoffs %&gt;% mutate(PlayerLabel = paste(Player, Year, sep=&quot; &quot;))
+playoffstuds &lt;- playoffstuds %&gt;% mutate(PlayerLabel = paste(Player, Year, sep=&quot; &quot;))</code></pre>
+<p>Next, I did the same thing as the regular season but this time with playoff statistics. This time filtering by goalies who played more than 10 game to indicate that they made it past the first round of the playoffs. We added a “Year” column to every original .csv and then mutated it to display next to the player’s name.</p>
+<pre class="r"><code>regseasons %&gt;% summarise(avgsv. = mean(SV.))</code></pre>
+<pre><code>##      avgsv.
+## 1 0.9135283</code></pre>
+<pre class="r"><code>playoffs %&gt;% summarise(plavgsv. = mean(SV.))</code></pre>
+<pre><code>##    plavgsv.
+## 1 0.9221493</code></pre>
+<pre class="r"><code>ggplot() +
+  geom_hline(yintercept = 0.9135283, color= &quot;blue&quot;) +
+  geom_hline(yintercept = 0.9221493, color= &quot;red&quot;) +
+  geom_text(aes(x=.3, y=.925, label=&quot;Average playoffs save %&quot;), color=&quot;red&quot;) +
+  geom_text(aes(x=.35, y=.915, label=&quot;Average regular season save %&quot;), color=&quot;blue&quot;) +
+geom_point(
+    data=regseasons, 
+    aes(x=QS., y=SV.), 
+    color=&quot;grey&quot;, 
+    alpha=.5) + 
+  geom_point(
+    data=playoffs, 
+    aes(x=QS., y=SV.), 
+    color=&quot;green&quot;) + 
+  geom_point(
+    data=playoffstuds, 
+    aes(x=QS., y=SV.), 
+    color=&quot;maroon&quot;) + 
+  geom_text_repel(
+    data=playoffstuds, 
+    aes(x=QS., y=SV., label=PlayerLabel)) +
+  labs(x=&quot;Quality Starts %&quot;, y=&quot;Save %&quot;, title=&quot;Playoff Goalies vs Regular Season&quot;, subtitle=&quot;Goalies in the playoffs, on average, perform better.&quot;, caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;) +
+  theme_minimal() + 
+  theme(
+    plot.title = element_text(size = 16, face = &quot;bold&quot;),
+    axis.title = element_text(size = 10),
+    axis.text = element_text(size = 7),
+    axis.ticks = element_blank(),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank()
+  )</code></pre>
+<p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
+From the scatterplot above, you can see a majority of the playoff goalies, marked in green, are above the average save percentage line during the regular season the last 10 years. No surprise, the playoffs average save percentage is also a whole 100th of a point higher which means a lot in terms of save percentage.</p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
