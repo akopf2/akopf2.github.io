@@ -62,7 +62,7 @@
 
   <article class="article">
     
-    <span class="article-duration">4 min read</span>
+    <span class="article-duration">7 min read</span>
     
 
     <h1 class="article-title">Do NHL Goalies Perform Better in the Postseason?</h1>
@@ -152,7 +152,7 @@ playoffstuds &lt;- playoffstuds %&gt;% mutate(PlayerLabel = paste(Player, Year, 
   geom_hline(yintercept = 0.9135283, color= &quot;blue&quot;) +
   geom_hline(yintercept = 0.9221493, color= &quot;red&quot;) +
   geom_text(aes(x=.3, y=.925, label=&quot;Average playoffs save %&quot;), color=&quot;red&quot;) +
-  geom_text(aes(x=.35, y=.915, label=&quot;Average regular season save %&quot;), color=&quot;blue&quot;) +
+  geom_text(aes(x=.3, y=.91, label=&quot;Average regular season save %&quot;), color=&quot;blue&quot;) +
 geom_point(
     data=regseasons, 
     aes(x=QS., y=SV.), 
@@ -169,11 +169,11 @@ geom_point(
   geom_text_repel(
     data=playoffstuds, 
     aes(x=QS., y=SV., label=PlayerLabel)) +
-  labs(x=&quot;Quality Starts %&quot;, y=&quot;Save %&quot;, title=&quot;Playoff Goalies vs Regular Season&quot;, subtitle=&quot;Goalies in the playoffs, on average, perform better.&quot;, caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;) +
+  labs(x=&quot;Quality Starts %&quot;, y=&quot;Save %&quot;, title=&quot;Playoff Goalie performance vs Regular Season&quot;, subtitle=&quot;Goalies in the playoffs, on average, perform better.&quot;, caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;) +
   theme_minimal() + 
   theme(
     plot.title = element_text(size = 16, face = &quot;bold&quot;),
-    axis.title = element_text(size = 10),
+    axis.title = element_text(size = 8),
     axis.text = element_text(size = 7),
     axis.ticks = element_blank(),
     panel.grid.minor = element_blank(),
@@ -181,6 +181,69 @@ geom_point(
   )</code></pre>
 <p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 From the scatterplot above, you can see a majority of the playoff goalies, marked in green, are above the average save percentage line during the regular season the last 10 years. No surprise, the playoffs average save percentage is also a whole 100th of a point higher which means a lot in terms of save percentage.</p>
+<p>Now that we looked at save percentage, in both the regular season and the playoffs, I’d like to take a look closer at the x-axis in my previous plot. A quality start is defined as when a goaltender achieves at least the mean save percentage during that season. There is an additional criteria for low shooting games: if a goalie faces 20 or fewer shots, he only needs to get an 88.5% save percentage. I’d like to use a waffle chart to display this.</p>
+<pre class="r"><code>library(waffle)</code></pre>
+<pre class="r"><code>regseasons %&gt;% summarise(sum(GS))</code></pre>
+<pre><code>##   sum(GS)
+## 1   18796</code></pre>
+<pre class="r"><code>regseasons %&gt;% summarise(sum(QS))</code></pre>
+<pre><code>##   sum(QS)
+## 1   10250</code></pre>
+<pre class="r"><code>playoffs %&gt;% summarise(sum(GS))</code></pre>
+<pre><code>##   sum(GS)
+## 1    1117</code></pre>
+<pre class="r"><code>playoffs %&gt;% summarise(sum(QS))</code></pre>
+<pre><code>##   sum(QS)
+## 1     704</code></pre>
+<p>I summed up the total starts and quality starts for both the regular season data and playoffs. To determine the total number of quality and non-quality starts.</p>
+<pre class="r"><code>regularstarts &lt;- c(&quot;Non-Quality Starts&quot;=8546, &quot;Quality Starts&quot;=10250)
+playoffstarts &lt;- c(&quot;Non-Quality Starts&quot;=413, &quot;Quality Starts&quot;=704)</code></pre>
+<pre class="r"><code>regularstarts &lt;- c(&quot;Non-Quality Starts&quot;=8546, &quot;Quality Starts&quot;=10250)
+playoffstarts &lt;- c(&quot;Non-Quality Starts&quot;=413, &quot;Quality Starts&quot;=704, 17679)</code></pre>
+<p>I created our data to use for my waffle chart, adding additional starts to the playoffs so I can have the same scale when comparing the two data frames.</p>
+<pre class="r"><code>iron(
+ waffle(
+   regularstarts/50, 
+   rows = 10, 
+   colors = c(&quot;black&quot;, &quot;red&quot;, &quot;white&quot;)) + 
+   labs(title=&quot;Regular season starts vs the Playoffs&quot;, subtitle=&quot;Dominant Goalies come alive during the playoffs&quot;) + 
+   theme(
+    plot.title = element_text(size = 16, face = &quot;bold&quot;),
+    axis.title = element_text(size = 10),
+    axis.title.y = element_blank()
+  ),
+ waffle(
+   playoffstarts/50, 
+   rows = 10, 
+   xlab=&quot;1 square = 50 starts&quot;, 
+   colors = c(&quot;black&quot;, &quot;red&quot;, &quot;white&quot;)) + labs(caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;)
+) </code></pre>
+<p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Let’s breakdown the waffle grid above. Though there are many more squares in the regular season, the distrivution of quality starts and non-quality starts is pretty close to even, whereas the playoffs is heavily leaned towards more quality start than non-quality, indicating that goaltenders in the playoffs perform at a higher level than the regular season.</p>
+<p>Finally, I would like to take a look at the four goalies we filtered out earlier for having above .940 save percentages in the playoffs.</p>
+<pre class="r"><code>reg12 &lt;- regseason1112 %&gt;% mutate(SeasonType = &quot;Regular&quot;)
+play12 &lt;- ploffs1112  %&gt;% mutate(SeasonType = &quot;Playoffs&quot;)
+reg15 &lt;- regseason1415  %&gt;% mutate(SeasonType = &quot;Regular&quot;)
+play15 &lt;- ploffs1415  %&gt;% mutate(SeasonType = &quot;Playoffs&quot;)
+reg16 &lt;- regseason1516  %&gt;% mutate(SeasonType = &quot;Regular&quot;)
+play16 &lt;- ploffs1516  %&gt;% mutate(SeasonType = &quot;Playoffs&quot;)</code></pre>
+<pre class="r"><code>top4 &lt;- bind_rows(reg12, play12, reg15, play15, reg16, play16)</code></pre>
+<pre class="r"><code>top4 &lt;- top4 %&gt;% mutate(Player=gsub(&quot;\\\\.*&quot;,&quot;&quot;,Player))
+top4 &lt;- top4 %&gt;% mutate(PlayerLabel = paste(Player, Year, sep=&quot; &quot;))</code></pre>
+<pre class="r"><code>top4 &lt;- top4 %&gt;% filter(PlayerLabel ==&quot;Jonathan Quick 2012&quot; | PlayerLabel == &quot;Mike Smith 2012&quot; | PlayerLabel == &quot;Braden Holtby 2015&quot; | PlayerLabel == &quot;Braden Holtby 2016&quot;) </code></pre>
+<p>In the lines above, I mutated the data for the years the 4 goalies produced the &gt;.940 save percentage to display regular and playoffs and then filtered the data to show only those 4 goalies performances in the regular and postseason of that year.</p>
+<pre class="r"><code>ggplot() +
+  geom_bar(data=top4, aes(x=SeasonType, weight=`SV.`, fill = SeasonType)) +
+labs(
+    title=&quot;Top 4 Playoff goalies by Save %&quot;,
+    x=&quot;Player&quot;,
+    y=&quot;Save %&quot;
+)  + 
+  facet_wrap(~PlayerLabel, scales=&quot;free_y&quot;) +
+  coord_cartesian(ylim=c(.9, .99)) + labs(x=&quot;Save %&quot;, y=&quot;Player&quot;, title=&quot;Top 4 Playoff Goalies performance vs Regular Season&quot;, subtitle=&quot;These goalies though they had good regular season, were amazing in the playoffs.&quot;, caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;)</code></pre>
+<p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>As the facet wrap of bar charts shows above, these four goalies, though they played great in the regular season, played even better in the playoffs. Every goalie improved his save percentage by at least .10 which is insane when referring to save percentage.</p>
+<p>Based off the data collected and three visuals produced, I think it is fair to assume that goaltender performances in the playoffs are amplified when compared to the regular season.</p>
 
     </div>
   </article>
