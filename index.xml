@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Tue, 30 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Fri, 02 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/about/</guid>
+      <description>My name is Alex Kopf and I am a Sports media and communication major and statistics minor at the University of Nebraska-Lincoln. I am from Omaha, Nebraska and attended Millard South high school. In my free time I play for the Nebraska Hockey team.</description>
+    </item>
+    
+    <item>
       <title>Do NHL Goalies Perform Better in the Postseason?</title>
       <link>/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/</link>
       <pubDate>Tue, 30 Mar 2021 00:00:00 +0000</pubDate>
@@ -24,15 +33,6 @@
       <guid>/2021/03/29/cleaning-data/</guid>
       <description>I am going to determine which games this college football season had the worst score differential
 library(tidyverse) ## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ── ## ✓ ggplot2 3.3.3 ✓ purrr 0.3.4 ## ✓ tibble 3.0.3 ✓ dplyr 1.0.2 ## ✓ tidyr 1.1.2 ✓ stringr 1.4.0 ## ✓ readr 1.4.0 ✓ forcats 0.5.0 ## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ── ## x dplyr::filter() masks stats::filter() ## x dplyr::lag() masks stats::lag() badlogs &amp;lt;- read.</description>
-    </item>
-    
-    <item>
-      <title>About</title>
-      <link>/about/</link>
-      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
-      
-      <guid>/about/</guid>
-      <description>My name is Alex Kopf and I am a Sports media and communication major and statistics minor at the University of Nebraska-Lincoln. I am from Omaha, Nebraska and attended Millard South high school. In my free time I play for the Nebraska Hockey team.</description>
     </item>
     
   </channel>

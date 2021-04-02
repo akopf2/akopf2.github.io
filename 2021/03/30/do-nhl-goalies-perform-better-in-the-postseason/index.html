@@ -177,8 +177,8 @@ geom_point(
     axis.text = element_text(size = 7),
     axis.ticks = element_blank(),
     panel.grid.minor = element_blank(),
-    panel.grid.major.x = element_blank()
-  )</code></pre>
+    panel.grid.major.x = element_blank() 
+  ) </code></pre>
 <p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-14-1.png" width="672" />
 From the scatterplot above, you can see a majority of the playoff goalies, marked in green, are above the average save percentage line during the regular season the last 10 years. No surprise, the playoffs average save percentage is also a whole 100th of a point higher which means a lot in terms of save percentage.</p>
 <p>Now that we looked at save percentage, in both the regular season and the playoffs, I’d like to take a look closer at the x-axis in my previous plot. A quality start is defined as when a goaltender achieves at least the mean save percentage during that season. There is an additional criteria for low shooting games: if a goalie faces 20 or fewer shots, he only needs to get an 88.5% save percentage. I’d like to use a waffle chart to display this.</p>
@@ -219,7 +219,7 @@ playoffstarts &lt;- c(&quot;Non-Quality Starts&quot;=413, &quot;Quality Starts&q
    colors = c(&quot;black&quot;, &quot;red&quot;, &quot;white&quot;)) + labs(caption=&quot;Source: Sports-Reference.com | By Alex Kopf&quot;)
 ) </code></pre>
 <p><img src="/2021/03/30/do-nhl-goalies-perform-better-in-the-postseason/index_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
-<p>Let’s breakdown the waffle grid above. Though there are many more squares in the regular season, the distrivution of quality starts and non-quality starts is pretty close to even, whereas the playoffs is heavily leaned towards more quality start than non-quality, indicating that goaltenders in the playoffs perform at a higher level than the regular season.</p>
+<p>Let’s breakdown the waffle grid above. Though there are many more squares in the regular season, the distribution of quality starts and non-quality starts is pretty close to even, whereas the playoffs is heavily leaned towards more quality start than non-quality, indicating that goaltenders in the playoffs perform at a higher level than the regular season.</p>
 <p>Finally, I would like to take a look at the four goalies we filtered out earlier for having above .940 save percentages in the playoffs.</p>
 <pre class="r"><code>reg12 &lt;- regseason1112 %&gt;% mutate(SeasonType = &quot;Regular&quot;)
 play12 &lt;- ploffs1112  %&gt;% mutate(SeasonType = &quot;Playoffs&quot;)
