@@ -32,7 +32,7 @@ library(tidyverse) ## ── Attaching packages ──────────�
       <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
       
       <guid>/about/</guid>
-      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+      <description>My name is Alex Kopf and I am a Sports media and communication major and statistics minor at the University of Nebraska-Lincoln. I am from Omaha, Nebraska and attended Millard South high school. In my free time I play for the Nebraska Hockey team.</description>
     </item>
     
   </channel>
