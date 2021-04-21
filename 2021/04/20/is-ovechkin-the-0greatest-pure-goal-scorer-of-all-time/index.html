@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Hugo 0.81.0" />
+
+
+<title>Is Ovechkin the Greatest Pure Goal Scorer of All Time? - Alex Kopf</title>
+<meta property="og:title" content="Is Ovechkin the Greatest Pure Goal Scorer of All Time? - Alex Kopf">
+
+
+  <link href='/favicon.ico' rel='icon' type='image/x-icon'/>
+
+
+
+  
+
+
+
+
+
+
+
+
+<link href='//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css' rel='stylesheet' type='text/css' />
+
+
+
+<link rel="stylesheet" href="/css/fonts.css" media="all">
+<link rel="stylesheet" href="/css/main.css" media="all">
+
+
+
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <nav class="nav">
+  <a href="/" class="nav-logo">
+    <img src="/images/logo.png"
+         width="50"
+         height="50"
+         alt="Logo">
+  </a>
+
+  <ul class="nav-links">
+    
+    <li><a href="/about/">About</a></li>
+    
+    <li><a href="https://github.com/akopf2">GitHub</a></li>
+    
+    <li><a href="https://twitter.com/bigsaveaj">Twitter</a></li>
+    
+  </ul>
+</nav>
+
+      </header>
+
+
+<main class="content" role="main">
+
+  <article class="article">
+    
+    <span class="article-duration">2 min read</span>
+    
+
+    <h1 class="article-title">Is Ovechkin the Greatest Pure Goal Scorer of All Time?</h1>
+
+    
+    <span class="article-date">2021-04-20</span>
+    
+
+    <div class="article-content">
+      
+<script src="/2021/04/20/is-ovechkin-the-0greatest-pure-goal-scorer-of-all-time/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>As a hockey fan my entire life, and sharing the same first name, I have always been a fan of Russian superstar Alexander Ovechkin of the Washington Capitals. As he continues his career, Ovechkin is nearing Gretzky’s goal record more and more. Even if he doesn’t pass it, could he be considered right now as the best pure goal scorer of all time? Lets look at some data</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.3     ✓ purrr   0.3.4
+## ✓ tibble  3.1.0     ✓ dplyr   1.0.5
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   1.4.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(ggrepel)</code></pre>
+<pre class="r"><code>Ovi &lt;- read_csv(&quot;OviandGreats.csv&quot;)</code></pre>
+<pre><code>## Warning: Duplicated column names deduplicated: &#39;G&#39; =&gt; &#39;G_1&#39; [27], &#39;A&#39; =&gt;
+## &#39;A_1&#39; [28], &#39;PTS&#39; =&gt; &#39;PTS_1&#39; [29]</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   .default = col_double(),
+##   Player = col_character(),
+##   Tm = col_character(),
+##   Pos = col_character()
+## )
+## ℹ Use `spec()` for the full column specifications.</code></pre>
+<pre class="r"><code>Ovi &lt;- Ovi %&gt;% mutate(Player=gsub(&quot;\\\\.*&quot;,&quot;&quot;,Player))</code></pre>
+<pre class="r"><code>Ovechkin &lt;- Ovi %&gt;% filter(Player == &quot;Alex Ovechkin&quot;)
+Gretzky &lt;- Ovi %&gt;% filter(Player == &quot;Wayne Gretzky*&quot;)</code></pre>
+<p>In the data set I acquired, we have the Top 11 goal scorers of all time, since Ovechkin is in the Top 10. I also included the player he is most compared to, Sidney Crosby, and argued the best player right now who is Connor McDavid.</p>
+<pre class="r"><code>Ovi %&gt;% summarise(avgspct = mean(`S%`))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##   avgspct
+##     &lt;dbl&gt;
+## 1    14.7</code></pre>
+<pre class="r"><code>Ovi %&gt;% summarise(avgG = mean(G))</code></pre>
+<pre><code>## # A tibble: 1 x 1
+##    avgG
+##   &lt;dbl&gt;
+## 1  679.</code></pre>
+<p>I want to see where Ovechkin stood related to his peers and their shooting percentage plus goals average among themselves.</p>
+<pre class="r"><code>ggplot() +
+geom_point(
+    data=Ovi, 
+    aes(x=G, y=`S%`, size= S), 
+    color=&quot;grey&quot;, 
+    alpha=.5) + 
+  geom_point(
+    data=Ovechkin, 
+    aes(x=G, y=`S%`, size= S), 
+    color=&quot;red&quot;) + 
+   geom_point(
+    data=Gretzky, 
+    aes(x=G, y=`S%`, size= S), 
+    color=&quot;blue&quot;) +
+  geom_text_repel(
+    data=Ovi, 
+    aes(x=G, y=`S%`, label=Player)) +
+  geom_hline(yintercept = 14.66154) +
+geom_vline(xintercept = 678.8462)</code></pre>
+<p><img src="/2021/04/20/is-ovechkin-the-0greatest-pure-goal-scorer-of-all-time/index_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+As we can see above, Ovechkin is dead last among his peers in the top 10 goal scorers when it comes to shooting percentage. However, he also takes the most shots out of anyone in the data set. Now let’s look at Ovechkin’s strongest suit, the powerplay.</p>
+<pre class="r"><code>goals &lt;- Ovi %&gt;% 
+ group_by(Player) %&gt;% 
+   summarise(
+    CareerPowerplay = sum(PP),
+    CareerEven = sum(EV),
+    CareerShort = sum(SH))</code></pre>
+<pre class="r"><code>goals %&gt;% 
+  pivot_longer(
+    cols=starts_with(&quot;Career&quot;), 
+    names_to=&quot;Type&quot;, 
+    values_to=&quot;Goals&quot;) -&gt; cargoals</code></pre>
+<pre class="r"><code>ggplot(cargoals, aes(x=Player, weight=Goals, fill=Type)) + 
+  geom_bar() + 
+  coord_flip() </code></pre>
+<p><img src="/2021/04/20/is-ovechkin-the-0greatest-pure-goal-scorer-of-all-time/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+
+    </div>
+  </article>
+
+  
+
+
+</main>
+
+      <footer class="footer">
+        <ul class="footer-links">
+          <li>
+            <a href="/index.xml" type="application/rss+xml" target="_blank">RSS feed</a>
+          </li>
+          <li>
+            <a href="https://gohugo.io/" class="footer-links-kudos">Made with <img src="/images/hugo-logo.png" alt="Img link to Hugo website" width="22" height="22"></a>
+          </li>
+        </ul>
+      </footer>
+
+    </div>
+    
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/r.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/yaml.min.js"></script>
+<script>hljs.configure({languages: []}); hljs.initHighlightingOnLoad();</script>
+
+
+
+    
+<script src="/js/math-code.js"></script>
+<script async src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+
+    
+  </body>
+</html>
+
