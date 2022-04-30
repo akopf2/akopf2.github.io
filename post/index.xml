@@ -6,7 +6,16 @@
     <description>Recent content in Posts on Alex Kopf</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 29 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 30 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Betting Post Mortem</title>
+      <link>/2022/04/30/betting-post-mortem/</link>
+      <pubDate>Sat, 30 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/04/30/betting-post-mortem/</guid>
+      <description>Once again, I tried to predict the future based off a model and an addition of basketball knowledge with human interference. Our group&amp;rsquo;s model stayed pretty basic, using offensive and defensive efficiency, rebounds and shooting statistics. Unlike the March Madness models, we were allowed to distrust our models. We intervened rarely, usually factoring in if a star player was returning or sitting out. As a group we would look at previous games, the series record and who was hot on both teams.</description>
+    </item>
+    
     <item>
       <title>Why It&#39;s Called March Madness</title>
       <link>/2022/03/29/why-it-s-called-march-madness/</link>
